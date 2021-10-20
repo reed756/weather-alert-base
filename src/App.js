@@ -1,6 +1,7 @@
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import React, { useState } from "react";
+import './index.css'
 
 
   const api = {
@@ -11,6 +12,7 @@ import React, { useState } from "react";
   function App() {
       const [query, setQuery] = useState('');
       const [weather, setWeather] = useState({});
+      const [favourites, setFavourites] = useState([]);
     
       const search = evt => {
         if (evt.key === "Enter") {
@@ -43,7 +45,7 @@ import React, { useState } from "react";
               <input 
                 type="text"
                 className="search-bar"
-                placeholder="Search..."
+                placeholder="Type in a location (e.g London, Berlin, etc) and press enter"
                 onChange={e => setQuery(e.target.value)}
                 value={query}
                 onKeyPress={search}
@@ -61,8 +63,25 @@ import React, { useState } from "react";
                 </div>
                 <div className="weather">{weather.weather[0].main}</div>
               </div>
+              <div className="favourite-button">
+                <button
+                  onClick={(e) => {
+                    const newFavourites = [...favourites, weather.name];
+                    setFavourites(newFavourites);
+                    console.log(favourites);
+                }}
+                >FAVOURITE LOCATION</button>
+              </div>
             </div>
             ) : ('')}
+            <div>
+              { favourites.map(item => {
+                return <div
+                className="favourites"
+                onClick={(e) => {setQuery(e.target.value)}}
+                >{item}</div>
+              }) }
+            </div>
           </main>
         </div>
       );
